@@ -1,0 +1,13 @@
+version: 1.0
+provider:
+  name: openfaas
+  gateway: http://10.160.160.46:31112
+
+functions:
+  latency-test:
+    lang: python3-http
+    handler: .
+    image: overdosedoc/latency-test:latest
+    environment:
+      READ_TIMEOUT: "30s"
+      WRITE_TIMEOUT: "30s"
