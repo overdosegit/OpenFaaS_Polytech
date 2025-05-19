@@ -72,7 +72,7 @@
    ```docker push <user_name>/repo:tag```
    ```faas-cli deploy -f stack.yaml```
   
-   **Примечание**: Для Community Edition Open Fas необходимо, чтобы Docker-образ был доступен в публичном реестре (например, Docker Hub).
+   **Примечание**: Для Community Edition OpenFaas необходимо, чтобы Docker-образ был доступен в публичном реестре (например, Docker Hub).
 
 ## Интеграция с ... (in progress)
 
