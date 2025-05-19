@@ -20,3 +20,30 @@
 
 ## Установка и настройка
 
+1. Получить config-файл для подключения к кластеру k8s, проверить подключение к кластеру:
+
+   ```kubectl cluster-info```
+
+2. Установить OpenFaaS на кластер:
+
+   ```arkade install openfaas```
+
+3. Получить пароль для доступа:
+
+   ```kubectl get secret -n openfaas basic-auth -o jsonpath="{.data.basic-auth-password}" | base64 --decode```
+
+4. Установить faas-cli:
+
+   ```arkade get faas-cli```
+
+5. Авторизоваться в faas-cli:
+
+   ```faas-cli login -u admin --password __пароль__ --gateway  http://ip_кластера:порт```
+
+   Ip-кластера можно узнать из config-файла, а порт узнать с помощью команды:
+
+   ```kubectl get svc -n openfaas```
+
+   Необходим порт сервиса gateway-external, который по умолчанию задан NodePort.
+
+6. Авторизоваться в Web-UI OpenFaaS, для этого необходимо открыть в браузере: http://ip_кластера:порт. Войти под логином admin, а пароль ввести из пункта 3.
