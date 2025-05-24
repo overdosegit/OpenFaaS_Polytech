@@ -153,6 +153,8 @@ UAExpert можно использовать для чтения и записи
 [Click to view network_latency.json file](./network_latency.json)
 ## Удаление OpenFaaS с кластера Kubernetes
 
+Этот раздел не является частью основного проекта, но содержит важные инструкции для пользователей, которые хотят полностью удалить OpenFaaS из кластера Kubernetes.
+
 __Рекомендуется__ перед удалением OpenFaaS:
 
 1. Проверить развернутые функции:
@@ -176,6 +178,16 @@ __Рекомендуется__ перед удалением OpenFaaS:
    ```kubectl delete crd -l app.kubernetes.io/name=openfaas```
 
 ## Результаты проекта
+
+Проект успешно выполнен:
+
+- OpenFaaS развернут в Kubernetes
+
+- Создана и протестирована serverless-функция для измерения задержек
+
+- Обеспечена интеграция с PLC через Node-RED
+
+Полученные данные могут быть использованы для анализа производительности в системах реального времени.
 
 ## Дополнительные материалы
 [![OpenFaaS](https://img.shields.io/badge/OpenFaaS-Official-blue)](https://github.com/openfaas/faas-netes)  
