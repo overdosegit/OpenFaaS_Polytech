@@ -16,7 +16,10 @@
     - Возвращает длительность работы (в миллисекундах)
   - Деплой функции на платформу OpenFaaS
 
-- Интеграция с ... (in progress)
+- Интеграция с PLC
+  - Используйте node-red для подключения к ПЛК и монитору
+  - Отправьте http-запрос при изменении статуса узла и запишите время отправки
+  - Запишите время получения и значение возврата ответа и рассчитайте разницу
 
 ## Установка и настройка
 
@@ -76,10 +79,77 @@
   
 **Примечание**: Для Community Edition OpenFaas необходимо, чтобы Docker-образ был доступен в публичном реестре (например, Docker Hub).
 
-## Интеграция с ... (in progress)
+## Интеграция с PLC
 
+UAExpert можно использовать для чтения и записи данных ПЛК
 
+1. Установить node-red
 
+   ```sudo npm install -g --unsafe-perm node-red```
+
+2. Запустите node-red, оставьте терминал работающим
+   
+   ```node-red```
+
+3. Установите модуль node-red-contrib-opcua в менеджере узлов
+
+4. Установить объект мониторинга через узел OpcUa Item
+   Пример Item: ns=4;i=34. Пример Type: Boolean
+
+5. Подключение к ПЛК через узел OpcUa-Client
+   Введите адрес сервера OPC UA в Endpoint
+   Остальные могут оставаться по умолчанию
+
+6. Используйте узлы function для определения изменений данных узлов
+
+   ```
+   context.lastValue = context.lastValue || false;
+   if (msg.payload !== context.lastValue) {
+       context.lastValue = msg.payload; 
+       return msg; 
+   } else {
+       return null; 
+   }
+   ```
+
+7. Используйте узел change, чтобы прочитать время
+   Выберите тип выражения
+
+   ```$now()```
+
+8. Используйте узел function для преобразования времени в миллисекунды
+
+   ```
+   if (typeof msg.payload === "string") {
+     msg.payload = Date.parse(msg.payload);
+   } else {
+   node.warn("Payload 不是字符串！当前类型: " + typeof msg.payload);
+   }
+   return msg;
+   ```
+
+9. Перед выполнением вычитания отредактируйте заголовки каждого времени. Использование узла change
+   Выберите msg. Введите topic
+   Значение — пользовательский текст
+
+10. Слияние три раза через узел join
+    Выбор режима: Ручной
+    Проверять Use existing msg.parts property
+    В поле «При достижении определенного объема информации» введите 3
+    ！Снимите флажок «И каждое последующее сообщение»
+
+11. Использование function узлов для вычитания
+
+    ```
+    const start = msg.payload.startTime;
+    const end = msg.payload.endTime;
+    const duration = Math.abs(end - start);
+    return {
+        payload: duration,               
+        durationFormatted: `${duration}ms` 
+    };
+    ```
+    
 ## Удаление OpenFaaS с кластера Kubernetes
 
 __Рекомендуется__ перед удалением OpenFaaS:
