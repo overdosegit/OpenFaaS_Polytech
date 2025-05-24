@@ -149,7 +149,8 @@ UAExpert можно использовать для чтения и записи
         durationFormatted: `${duration}ms` 
     };
     ```
-    
+
+[Click to view network_latency.json file](./network_latency.json)
 ## Удаление OpenFaaS с кластера Kubernetes
 
 __Рекомендуется__ перед удалением OpenFaaS:
